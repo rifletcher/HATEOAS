@@ -30,7 +30,14 @@ namespace HATEOAS
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Values Api", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Profile Api", Version = "v1" });
+            });
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(factory =>
+            {
+                var actionContext = factory.GetService<IActionContextAccessor>()
+                    .ActionContext;
+                return new UrlHelper(actionContext);
             });
         }
 
@@ -48,13 +55,6 @@ namespace HATEOAS
             {
                 c.RoutePrefix = "swagger";
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Documentation");
-            });
-
-            services.AddScoped<IUrlHelper>(factory =>
-            {
-                var actionContext = factory.GetService<IActionContextAccessor>()
-                    .ActionContext;
-                return new UrlHelper(actionContext);
             });
 
             app.UseMvc();
