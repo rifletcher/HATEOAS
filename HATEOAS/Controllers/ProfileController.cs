@@ -20,6 +20,10 @@ namespace HATEOAS.Controllers
         [HttpGet(Name = "GetProfiles")]
         public ActionResult GetAll(PagingParams pagingParams)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var profileList = new List<Profile>();
             profileList.Add(new Profile() { ProfileId = 1, Name = "Profile 1" });
             profileList.Add(new Profile() { ProfileId = 1, Name = "Profile 2" });
@@ -32,6 +36,10 @@ namespace HATEOAS.Controllers
         [HttpGet("{id}", Name = "GetProfile")]
         public ActionResult Get(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var result = new Profile
             {
                 ProfileId = 1,
@@ -45,8 +53,10 @@ namespace HATEOAS.Controllers
         [HttpPost(Name = "PostProfile")]
         public ActionResult Post([FromBody]ProfileRequest profileRequest)
         {
-            if (profileRequest == null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var profile = new Profile() { ProfileId = 1, Name = profileRequest.Name };
             var outputModel = ToOutputModel_Links(profile);
@@ -56,22 +66,30 @@ namespace HATEOAS.Controllers
         [HttpPut("{id}", Name = "PutProfile")]
         public ActionResult Put(int id, [FromBody]ProfileRequest profileRequest)
         {
-            if (profileRequest == null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             return NoContent();
         }
 
         [HttpPatch("{id}", Name = "PatchProfile")]
         public ActionResult UpdatePatch(int id, [FromBody]ProfileRequest profileRequest)
         {
-            if (profileRequest == null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             return NoContent();
         }
 
         [HttpDelete("{id}", Name = "DeleteProfile")]
         public ActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             return NoContent();
         }
 
